@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  
+  </head>
+  <body>
+    <a href="contacts.html">contacts</a>
+    <a href="reminders.html">reminders</a>
+    <h1>contacts</h1>
+    <input data-role="name" type="text" placeholder="name here" />
+    <input data-role="phone" type="tel" placeholder="phone" />
+    <button data-role="btn">click</button>
+    <h1>my contacts</h1>
+    <ol data-role="contact-list"></ol>
+    <script>
+      $(function () {
+        function getAllContacts() {
+          $.get("/contacts", function (contacts) {
+            $('[data-role="contact-list"]').html('')
+            contacts.forEach((contact) => {
+              $('[data-role="contact-list"]').append(
+                `<li>${contact.name},${contact.phone}</li>`
+              );
+            });
+            console.log(contacts);
+          });
+        }
+
+    $('[data-role="btn"]').click(function () {
+          let name = $('[data-role="name"]').val();
+          let phone = $('[data-role="phone"]').val();
+          $.post("/contacts", { name, phone }, function (data) {
+          
+             $(".result").html(data); 
+             getAllContacts();    });
+        });
+      });
+    </script>
+  </body>
+</html>
